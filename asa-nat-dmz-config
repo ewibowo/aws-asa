@@ -654,10 +654,12 @@ no asdm history enable
 arp timeout 14400
 no arp permit-nonconnected
 arp rate-limit 32768
-nat (inside,outside) source dynamic any interface
 !
 object network ubuntu-server-dmz
  nat (dmz,outside) static ubuntu-server-outside service tcp www www 
+!
+nat (inside,outside) after-auto source dynamic any interface
+nat (dmz,outside) after-auto source dynamic any interface
 access-group outside_access_in in interface outside
 ipv6 dhcprelay timeout 60
 route outside 0.0.0.0 0.0.0.0 10.0.1.1 1
@@ -1427,5 +1429,5 @@ call-home
   destination preferred-msg-format xml
   destination transport-method http
 no password encryption aes
-Cryptochecksum:392e8f5255b518e9bbdac05ebd4ef8ed
+Cryptochecksum:7e6720a6d715cd014a97f5c3091f79cb
 : end
