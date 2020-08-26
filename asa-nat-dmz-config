@@ -1,0 +1,1431 @@
+ciscoasa# show run all
+: Saved
+
+: 
+: Serial Number: 9AV87AL02XF
+: Hardware:   ASAv, 32256 MB RAM, CPU Xeon E5 series 2300 MHz, 1 CPU (8 cores)
+:
+ASA Version 9.14(1)10 
+!
+command-alias exec h help
+command-alias exec lo logout
+command-alias exec p ping
+command-alias exec s show
+terminal width 80
+hostname ciscoasa
+domain-name aws.lab
+enable password ***** pbkdf2
+no asp load-balance per-packet
+no asp rule-engine transactional-commit access-group
+no asp rule-engine transactional-commit nat
+no fips enable
+service-module 0 keepalive-timeout 4
+service-module 0 keepalive-counter 6
+memory heap-trimming enable
+xlate per-session permit tcp any4 any4
+xlate per-session permit tcp any4 any6
+xlate per-session permit tcp any6 any4
+xlate per-session permit tcp any6 any6
+xlate per-session permit udp any4 any4 eq domain
+xlate per-session permit udp any4 any6 eq domain
+xlate per-session permit udp any6 any4 eq domain
+xlate per-session permit udp any6 any6 eq domain
+xlate block-allocation size 512
+xlate block-allocation maximum-per-host 4
+no xlate block-allocation pba-interim-logging
+names
+no mac-address auto
+
+bfd slow-timers 1000
+!
+interface GigabitEthernet0/0
+ speed auto
+ duplex auto
+ nameif outside
+ no cts manual
+ security-level 0
+ ip address 10.0.1.254 255.255.255.0 
+ delay 1
+!
+interface GigabitEthernet0/1
+ speed auto
+ duplex auto
+ nameif inside
+ no cts manual
+ security-level 100
+ ip address 10.0.2.254 255.255.255.0 
+ delay 1
+!
+interface GigabitEthernet0/2
+ speed auto
+ duplex auto
+ nameif dmz
+ no cts manual
+ security-level 50
+ ip address 10.0.3.254 255.255.255.0 
+ delay 1
+!
+interface Management0/0
+ speed auto
+ duplex auto
+ no management-only
+ nameif management
+ no cts manual
+ security-level 100
+ ip address 10.0.0.96 255.255.255.0 
+ delay 1
+!
+vxlan port 4789
+regex _default_gator "Gator"
+regex _default_firethru-tunnel_2 "[/\\]cgi[-]bin[/\\]proxy"
+regex _default_shoutcast-tunneling-protocol "1"
+regex _default_http-tunnel "[/\\]HT_PortLog.aspx"
+regex _default_x-kazaa-network "[\r\n\t ]+[xX]-[kK][aA][zZ][aA][aA]-[nN][eE][tT][wW][oO][rR][kK]"
+regex _default_msn-messenger "[Aa][Pp][Pp][Ll][Ii][Cc][Aa][Tt][Ii][Oo][Nn][/\\][Xx][-][Mm][Ss][Nn][-][Mm][Ee][Ss][Ss][Ee][Nn][Gg][Ee][Rr]"
+regex _default_GoToMyPC-tunnel_2 "[/\\]erc[/\\]Poll"
+regex _default_gnu-http-tunnel_uri "[/\\]index[.]html"
+regex _default_aim-messenger "[Hh][Tt][Tt][Pp][.][Pp][Rr][Oo][Xx][Yy][.][Ii][Cc][Qq][.][Cc][Oo][Mm]"
+regex _default_gnu-http-tunnel_arg "crap"
+regex _default_icy-metadata "[\r\n\t ]+[iI][cC][yY]-[mM][eE][tT][aA][dD][aA][tT][aA]"
+regex _default_GoToMyPC-tunnel "machinekey"
+regex _default_windows-media-player-tunnel "NSPlayer"
+regex _default_yahoo-messenger "YMSG"
+regex _default_httport-tunnel "photo[.]exectech[-]va[.]com"
+regex _default_firethru-tunnel_1 "firethru[.]com"
+checkheaps check-interval 60
+checkheaps validate-checksum 60
+ftp mode passive
+clock timezone UTC 0
+dns server-group DefaultDNS
+ domain-name aws.lab
+no object-group-search access-control
+no object-group-search threshold
+object service ah pre-defined
+ service ah 
+ description This is a pre-defined object
+object service eigrp pre-defined
+ service eigrp 
+ description This is a pre-defined object
+object service esp pre-defined
+ service esp 
+ description This is a pre-defined object
+object service gre pre-defined
+ service gre 
+ description This is a pre-defined object
+object service icmp pre-defined
+ service icmp 
+ description This is a pre-defined object
+object service icmp6 pre-defined
+ service icmp6 
+ description This is a pre-defined object
+object service igmp pre-defined
+ service igmp 
+ description This is a pre-defined object
+object service igrp pre-defined
+ service igrp 
+ description This is a pre-defined object
+object service ip pre-defined
+ service ip 
+ description This is a pre-defined object
+object service ipinip pre-defined
+ service ipinip 
+ description This is a pre-defined object
+object service ipsec pre-defined
+ service esp 
+ description This is a pre-defined object
+object service nos pre-defined
+ service nos 
+ description This is a pre-defined object
+object service ospf pre-defined
+ service ospf 
+ description This is a pre-defined object
+object service pcp pre-defined
+ service pcp 
+ description This is a pre-defined object
+object service pim pre-defined
+ service pim 
+ description This is a pre-defined object
+object service pptp pre-defined
+ service gre 
+ description This is a pre-defined object
+object service snp pre-defined
+ service snp 
+ description This is a pre-defined object
+object service tcp pre-defined
+ service tcp 
+ description This is a pre-defined object
+object service udp pre-defined
+ service udp 
+ description This is a pre-defined object
+object service tcp-aol pre-defined
+ service tcp destination eq aol 
+ description This is a pre-defined object
+object service tcp-bgp pre-defined
+ service tcp destination eq bgp 
+ description This is a pre-defined object
+object service tcp-chargen pre-defined
+ service tcp destination eq chargen 
+ description This is a pre-defined object
+object service tcp-cifs pre-defined
+ service tcp destination eq cifs 
+ description This is a pre-defined object
+object service tcp-citrix-ica pre-defined
+ service tcp destination eq citrix-ica 
+ description This is a pre-defined object
+object service tcp-ctiqbe pre-defined
+ service tcp destination eq ctiqbe 
+ description This is a pre-defined object
+object service tcp-daytime pre-defined
+ service tcp destination eq daytime 
+ description This is a pre-defined object
+object service tcp-discard pre-defined
+ service tcp destination eq discard 
+ description This is a pre-defined object
+object service tcp-domain pre-defined
+ service tcp destination eq domain 
+ description This is a pre-defined object
+object service tcp-echo pre-defined
+ service tcp destination eq echo 
+ description This is a pre-defined object
+object service tcp-exec pre-defined
+ service tcp destination eq exec 
+ description This is a pre-defined object
+object service tcp-finger pre-defined
+ service tcp destination eq finger 
+ description This is a pre-defined object
+object service tcp-ftp pre-defined
+ service tcp destination eq ftp 
+ description This is a pre-defined object
+object service tcp-ftp-data pre-defined
+ service tcp destination eq ftp-data 
+ description This is a pre-defined object
+object service tcp-gopher pre-defined
+ service tcp destination eq gopher 
+ description This is a pre-defined object
+object service tcp-ident pre-defined
+ service tcp destination eq ident 
+ description This is a pre-defined object
+object service tcp-imap4 pre-defined
+ service tcp destination eq imap4 
+ description This is a pre-defined object
+object service tcp-irc pre-defined
+ service tcp destination eq irc 
+ description This is a pre-defined object
+object service tcp-hostname pre-defined
+ service tcp destination eq hostname 
+ description This is a pre-defined object
+object service tcp-kerberos pre-defined
+ service tcp destination eq kerberos 
+ description This is a pre-defined object
+object service tcp-klogin pre-defined
+ service tcp destination eq klogin 
+ description This is a pre-defined object
+object service tcp-kshell pre-defined
+ service tcp destination eq kshell 
+ description This is a pre-defined object
+object service tcp-ldap pre-defined
+ service tcp destination eq ldap 
+ description This is a pre-defined object
+object service tcp-ldaps pre-defined
+ service tcp destination eq ldaps 
+ description This is a pre-defined object
+object service tcp-login pre-defined
+ service tcp destination eq login 
+ description This is a pre-defined object
+object service tcp-lotusnotes pre-defined
+ service tcp destination eq lotusnotes 
+ description This is a pre-defined object
+object service tcp-nfs pre-defined
+ service tcp destination eq nfs 
+ description This is a pre-defined object
+object service tcp-netbios-ssn pre-defined
+ service tcp destination eq netbios-ssn 
+ description This is a pre-defined object
+object service tcp-whois pre-defined
+ service tcp destination eq whois 
+ description This is a pre-defined object
+object service tcp-nntp pre-defined
+ service tcp destination eq nntp 
+ description This is a pre-defined object
+object service tcp-pcanywhere-data pre-defined
+ service tcp destination eq pcanywhere-data 
+ description This is a pre-defined object
+object service tcp-pim-auto-rp pre-defined
+ service tcp destination eq pim-auto-rp 
+ description This is a pre-defined object
+object service tcp-pop2 pre-defined
+ service tcp destination eq pop2 
+ description This is a pre-defined object
+object service tcp-pop3 pre-defined
+ service tcp destination eq pop3 
+ description This is a pre-defined object
+object service tcp-pptp pre-defined
+ service tcp destination eq pptp 
+ description This is a pre-defined object
+object service tcp-lpd pre-defined
+ service tcp destination eq lpd 
+ description This is a pre-defined object
+object service tcp-rsh pre-defined
+ service tcp destination eq rsh 
+ description This is a pre-defined object
+object service tcp-rtsp pre-defined
+ service tcp destination eq rtsp 
+ description This is a pre-defined object
+object service tcp-sip pre-defined
+ service tcp destination eq sip 
+ description This is a pre-defined object
+object service tcp-smtp pre-defined
+ service tcp destination eq smtp 
+ description This is a pre-defined object
+object service tcp-ssh pre-defined
+ service tcp destination eq ssh 
+ description This is a pre-defined object
+object service tcp-sunrpc pre-defined
+ service tcp destination eq sunrpc 
+ description This is a pre-defined object
+object service tcp-tacacs pre-defined
+ service tcp destination eq tacacs 
+ description This is a pre-defined object
+object service tcp-talk pre-defined
+ service tcp destination eq talk 
+ description This is a pre-defined object
+object service tcp-telnet pre-defined
+ service tcp destination eq telnet 
+ description This is a pre-defined object
+object service tcp-uucp pre-defined
+ service tcp destination eq uucp 
+ description This is a pre-defined object
+object service tcp-www pre-defined
+ service tcp destination eq www 
+ description This is a pre-defined object
+object service tcp-http pre-defined
+ service tcp destination eq www 
+ description This is a pre-defined object
+object service tcp-https pre-defined
+ service tcp destination eq https 
+ description This is a pre-defined object
+object service tcp-cmd pre-defined
+ service tcp destination eq rsh 
+ description This is a pre-defined object
+object service tcp-sqlnet pre-defined
+ service tcp destination eq sqlnet 
+ description This is a pre-defined object
+object service tcp-h323 pre-defined
+ service tcp destination eq h323 
+ description This is a pre-defined object
+object service tcp-udp-cifs pre-defined
+ service tcp-udp destination eq cifs 
+ description This is a pre-defined object
+object service tcp-udp-discard pre-defined
+ service tcp-udp destination eq discard 
+ description This is a pre-defined object
+object service tcp-udp-domain pre-defined
+ service tcp-udp destination eq domain 
+ description This is a pre-defined object
+object service tcp-udp-echo pre-defined
+ service tcp-udp destination eq echo 
+ description This is a pre-defined object
+object service tcp-udp-kerberos pre-defined
+ service tcp-udp destination eq kerberos 
+ description This is a pre-defined object
+object service tcp-udp-nfs pre-defined
+ service tcp-udp destination eq nfs 
+ description This is a pre-defined object
+object service tcp-udp-pim-auto-rp pre-defined
+ service tcp-udp destination eq pim-auto-rp 
+ description This is a pre-defined object
+object service tcp-udp-sip pre-defined
+ service tcp-udp destination eq sip 
+ description This is a pre-defined object
+object service tcp-udp-sunrpc pre-defined
+ service tcp-udp destination eq sunrpc 
+ description This is a pre-defined object
+object service tcp-udp-tacacs pre-defined
+ service tcp-udp destination eq tacacs 
+ description This is a pre-defined object
+object service tcp-udp-www pre-defined
+ service tcp-udp destination eq www 
+ description This is a pre-defined object
+object service tcp-udp-http pre-defined
+ service tcp-udp destination eq www 
+ description This is a pre-defined object
+object service tcp-udp-talk pre-defined
+ service tcp-udp destination eq talk 
+ description This is a pre-defined object
+object service udp-biff pre-defined
+ service udp destination eq biff 
+ description This is a pre-defined object
+object service udp-bootpc pre-defined
+ service udp destination eq bootpc 
+ description This is a pre-defined object
+object service udp-bootps pre-defined
+ service udp destination eq bootps 
+ description This is a pre-defined object
+object service udp-cifs pre-defined
+ service udp destination eq cifs 
+ description This is a pre-defined object
+object service udp-discard pre-defined
+ service udp destination eq discard 
+ description This is a pre-defined object
+object service udp-domain pre-defined
+ service udp destination eq domain 
+ description This is a pre-defined object
+object service udp-dnsix pre-defined
+ service udp destination eq dnsix 
+ description This is a pre-defined object
+object service udp-echo pre-defined
+ service udp destination eq echo 
+ description This is a pre-defined object
+object service udp-www pre-defined
+ service udp destination eq www 
+ description This is a pre-defined object
+object service udp-http pre-defined
+ service udp destination eq www 
+ description This is a pre-defined object
+object service udp-nameserver pre-defined
+ service udp destination eq nameserver 
+ description This is a pre-defined object
+object service udp-kerberos pre-defined
+ service udp destination eq kerberos 
+ description This is a pre-defined object
+object service udp-mobile-ip pre-defined
+ service udp destination eq mobile-ip 
+ description This is a pre-defined object
+object service udp-nfs pre-defined
+ service udp destination eq nfs 
+ description This is a pre-defined object
+object service udp-netbios-ns pre-defined
+ service udp destination eq netbios-ns 
+ description This is a pre-defined object
+object service udp-netbios-dgm pre-defined
+ service udp destination eq netbios-dgm 
+ description This is a pre-defined object
+object service udp-ntp pre-defined
+ service udp destination eq ntp 
+ description This is a pre-defined object
+object service udp-pcanywhere-status pre-defined
+ service udp destination eq pcanywhere-status 
+ description This is a pre-defined object
+object service udp-pim-auto-rp pre-defined
+ service udp destination eq pim-auto-rp 
+ description This is a pre-defined object
+object service udp-radius pre-defined
+ service udp destination eq radius 
+ description This is a pre-defined object
+object service udp-radius-acct pre-defined
+ service udp destination eq radius-acct 
+ description This is a pre-defined object
+object service udp-rip pre-defined
+ service udp destination eq rip 
+ description This is a pre-defined object
+object service udp-secureid-udp pre-defined
+ service udp destination eq secureid-udp 
+ description This is a pre-defined object
+object service udp-sip pre-defined
+ service udp destination eq sip 
+ description This is a pre-defined object
+object service udp-snmp pre-defined
+ service udp destination eq snmp 
+ description This is a pre-defined object
+object service udp-snmptrap pre-defined
+ service udp destination eq snmptrap 
+ description This is a pre-defined object
+object service udp-sunrpc pre-defined
+ service udp destination eq sunrpc 
+ description This is a pre-defined object
+object service udp-syslog pre-defined
+ service udp destination eq syslog 
+ description This is a pre-defined object
+object service udp-tacacs pre-defined
+ service udp destination eq tacacs 
+ description This is a pre-defined object
+object service udp-talk pre-defined
+ service udp destination eq talk 
+ description This is a pre-defined object
+object service udp-tftp pre-defined
+ service udp destination eq tftp 
+ description This is a pre-defined object
+object service udp-time pre-defined
+ service udp destination eq time 
+ description This is a pre-defined object
+object service udp-who pre-defined
+ service udp destination eq who 
+ description This is a pre-defined object
+object service udp-xdmcp pre-defined
+ service udp destination eq xdmcp 
+ description This is a pre-defined object
+object service udp-isakmp pre-defined
+ service udp destination eq isakmp 
+ description This is a pre-defined object
+object service icmp6-unreachable pre-defined
+ service icmp6 unreachable
+ description This is a pre-defined object
+object service icmp6-packet-too-big pre-defined
+ service icmp6 packet-too-big
+ description This is a pre-defined object
+object service icmp6-time-exceeded pre-defined
+ service icmp6 time-exceeded
+ description This is a pre-defined object
+object service icmp6-parameter-problem pre-defined
+ service icmp6 parameter-problem
+ description This is a pre-defined object
+object service icmp6-echo pre-defined
+ service icmp6 echo
+ description This is a pre-defined object
+object service icmp6-echo-reply pre-defined
+ service icmp6 echo-reply
+ description This is a pre-defined object
+object service icmp6-membership-query pre-defined
+ service icmp6 membership-query
+ description This is a pre-defined object
+object service icmp6-membership-report pre-defined
+ service icmp6 membership-report
+ description This is a pre-defined object
+object service icmp6-membership-reduction pre-defined
+ service icmp6 membership-reduction
+ description This is a pre-defined object
+object service icmp6-router-renumbering pre-defined
+ service icmp6 router-renumbering
+ description This is a pre-defined object
+object service icmp6-router-solicitation pre-defined
+ service icmp6 router-solicitation
+ description This is a pre-defined object
+object service icmp6-router-advertisement pre-defined
+ service icmp6 router-advertisement
+ description This is a pre-defined object
+object service icmp6-neighbor-solicitation pre-defined
+ service icmp6 neighbor-solicitation
+ description This is a pre-defined object
+object service icmp6-neighbor-advertisement pre-defined
+ service icmp6 neighbor-advertisement
+ description This is a pre-defined object
+object service icmp6-neighbor-redirect pre-defined
+ service icmp6 neighbor-redirect
+ description This is a pre-defined object
+object service icmp-echo pre-defined
+ service icmp echo
+ description This is a pre-defined object
+object service icmp-echo-reply pre-defined
+ service icmp echo-reply
+ description This is a pre-defined object
+object service icmp-unreachable pre-defined
+ service icmp unreachable
+ description This is a pre-defined object
+object service icmp-source-quench pre-defined
+ service icmp source-quench
+ description This is a pre-defined object
+object service icmp-redirect pre-defined
+ service icmp redirect
+ description This is a pre-defined object
+object service icmp-alternate-address pre-defined
+ service icmp alternate-address
+ description This is a pre-defined object
+object service icmp-router-advertisement pre-defined
+ service icmp router-advertisement
+ description This is a pre-defined object
+object service icmp-router-solicitation pre-defined
+ service icmp router-solicitation
+ description This is a pre-defined object
+object service icmp-time-exceeded pre-defined
+ service icmp time-exceeded
+ description This is a pre-defined object
+object service icmp-parameter-problem pre-defined
+ service icmp parameter-problem
+ description This is a pre-defined object
+object service icmp-timestamp-request pre-defined
+ service icmp timestamp-request
+ description This is a pre-defined object
+object service icmp-timestamp-reply pre-defined
+ service icmp timestamp-reply
+ description This is a pre-defined object
+object service icmp-information-request pre-defined
+ service icmp information-request
+ description This is a pre-defined object
+object service icmp-information-reply pre-defined
+ service icmp information-reply
+ description This is a pre-defined object
+object service icmp-mask-request pre-defined
+ service icmp mask-request
+ description This is a pre-defined object
+object service icmp-mask-reply pre-defined
+ service icmp mask-reply
+ description This is a pre-defined object
+object service icmp-traceroute pre-defined
+ service icmp traceroute
+ description This is a pre-defined object
+object service icmp-conversion-error pre-defined
+ service icmp conversion-error
+ description This is a pre-defined object
+object service icmp-mobile-redirect pre-defined
+ service icmp mobile-redirect
+ description This is a pre-defined object
+object network ubuntu-server-dmz
+ host 10.0.3.6
+object network ubuntu-server-outside
+ host 10.0.1.253
+access-list outside_access_in extended permit tcp any4 any4 eq www log disable 
+pager lines 23
+logging hide username
+logging buffer-size 4096
+logging asdm-buffer-size 100
+logging flash-minimum-free 3076
+logging flash-maximum-allocation 1024
+no logging message 325007
+logging rate-limit 1 10 message 779001
+logging rate-limit 25 1 message 805001
+logging rate-limit 1 10 message 801001
+logging rate-limit 25 1 message 805002
+logging rate-limit 1 10 message 801002
+logging rate-limit 25 1 message 805003
+logging rate-limit 1 10 message 801003
+logging rate-limit 1 10 message 747001
+logging rate-limit 1 1 message 402116
+logging rate-limit 1 10 message 620002
+logging rate-limit 1 60 message 302311
+logging rate-limit 1 3600 message 770003
+logging rate-limit 1 10 message 717015
+logging rate-limit 1 10 message 201013
+logging rate-limit 1 10 message 201012
+logging rate-limit 1 1 message 313009
+logging rate-limit 100 1 message 750003
+logging rate-limit 100 1 message 750002
+logging rate-limit 100 1 message 750004
+logging rate-limit 1 10 message 419003
+logging rate-limit 1 60 message 751027
+logging rate-limit 1 10 message 405002
+logging rate-limit 1 10 message 405003
+logging rate-limit 1 10 message 421007
+logging rate-limit 1 10 message 405001
+logging rate-limit 1 10 message 421001
+logging rate-limit 1 10 message 421002
+logging rate-limit 1 10 message 434007
+logging rate-limit 1 10 message 325007
+logging rate-limit 1 60 message 199020
+logging rate-limit 2 5 message 199011
+logging rate-limit 1 10 message 199010
+logging rate-limit 2 5 message 199012
+logging rate-limit 1 10 message 710002
+logging rate-limit 100 1 message 753001
+logging rate-limit 1 10 message 209003
+logging rate-limit 1 10 message 209004
+logging rate-limit 1 10 message 209005
+logging rate-limit 1 10 message 778008
+logging rate-limit 1 10 message 778007
+logging rate-limit 1 10 message 778006
+logging rate-limit 1 10 message 431002
+logging rate-limit 1 10 message 778005
+logging rate-limit 1 10 message 431001
+logging rate-limit 1 10 message 778004
+logging rate-limit 1 1 message 447001
+logging rate-limit 1 10 message 778003
+logging rate-limit 1 10 message 778002
+logging rate-limit 1 10 message 778001
+logging rate-limit 1 10 message 110005
+logging rate-limit 1 100 message 110004
+logging rate-limit 1 10 message 110003
+logging rate-limit 1 10 message 110002
+logging rate-limit 1 10 message 429007
+logging rate-limit 1 10 message 216004
+logging rate-limit 25 1 message 618001
+logging rate-limit 1 10 message 450001
+logging rate-limit 1 10 message 450002
+flow-export template timeout-rate 30
+flow-export active refresh-interval 1
+mtu management 1500
+mtu inside 1500
+mtu dmz 1500
+mtu outside 1500
+no failover
+failover lan unit secondary
+failover polltime unit 1 holdtime 15
+failover polltime interface 5 holdtime 25
+failover interface-policy 1
+no failover standby config-lock 
+failover replication rate 200000
+no failover wait-disable
+monitor-interface management
+monitor-interface inside
+monitor-interface dmz
+monitor-interface outside
+no monitor-interface service-module 
+icmp unreachable rate-limit 1 burst-size 1
+asdm image disk0:/asdm-7141-48.bin
+no asdm history enable
+arp timeout 14400
+no arp permit-nonconnected
+arp rate-limit 32768
+nat (inside,outside) source dynamic any interface
+!
+object network ubuntu-server-dmz
+ nat (dmz,outside) static ubuntu-server-outside service tcp www www 
+access-group outside_access_in in interface outside
+ipv6 dhcprelay timeout 60
+route outside 0.0.0.0 0.0.0.0 10.0.1.1 1
+route management 10.0.0.0 255.0.0.0 10.0.0.1 1
+timeout xlate 3:00:00
+timeout pat-xlate 0:00:30
+timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 sctp 0:02:00 icmp 0:00:02
+timeout sunrpc 0:10:00 h323 0:05:00 h225 1:00:00 mgcp 0:05:00 mgcp-pat 0:05:00
+timeout sip 0:30:00 sip_media 0:02:00 sip-invite 0:03:00 sip-disconnect 0:02:00
+timeout sip-provisional-media 0:02:00 uauth 0:05:00 absolute
+timeout tcp-proxy-reassembly 0:01:00
+timeout floating-conn 0:00:00
+timeout conn-holddown 0:00:15
+timeout igp stale-route 0:01:10
+no cts server-group
+no cts sxp enable
+no cts sxp default password
+no cts sxp default source-ip
+cts sxp mapping network-map 0
+cts sxp delete-hold-down period 120
+cts sxp reconciliation period 120
+cts sxp retry period 120
+user-identity enable
+user-identity domain LOCAL
+user-identity default-domain LOCAL
+user-identity action mac-address-mismatch remove-user-ip
+user-identity inactive-user-timer minutes 60
+user-identity poll-import-user-group-timer hours 8
+user-identity ad-agent active-user-database full-download
+user-identity ad-agent hello-timer seconds 30 retry-times 5
+no user-identity user-not-found enable
+aaa authentication ssh console LOCAL 
+aaa proxy-limit 16
+no aaa authentication secure-http-client
+no aaa local authentication attempts max-fail
+no aaa authorization exec authentication-server
+aaa authentication login-history duration 90
+http server enable 443
+http server idle-timeout 20
+http server session-timeout 0
+http 0.0.0.0 0.0.0.0 management
+http username-from-certificate CN OU
+http server basic-auth-client ASDM
+http server basic-auth-client CSM
+http server basic-auth-client REST API Agent
+snmp-server listen-port 161
+no snmp-server location
+no snmp-server contact
+snmp-server enable traps snmp authentication linkup linkdown coldstart warmstart
+no snmp-server enable traps syslog
+no snmp-server enable traps ipsec start stop
+no snmp-server enable traps entity config-change fru-insert fru-remove fan-failure power-supply power-supply-presence cpu-temperature chassis-temperature power-supply-temperature chassis-fan-failure accelerator-temperature l1-bypass-status
+no snmp-server enable traps memory-threshold
+no snmp-server enable traps interface-threshold
+no snmp-server enable traps remote-access session-threshold-exceeded
+no snmp-server enable traps connection-limit-reached
+no snmp-server enable traps cpu threshold rising
+no snmp-server enable traps ikev2 start stop
+no snmp-server enable traps nat packet-discard
+no snmp-server enable traps config
+snmp-server enable oid mempool 
+snmp-server enable
+fragment size 200 management
+fragment chain 24 management
+fragment timeout 5 management
+no fragment reassembly full management
+fragment size 200 inside
+fragment chain 24 inside
+fragment timeout 5 inside
+no fragment reassembly full inside
+fragment size 200 dmz
+fragment chain 24 dmz
+fragment timeout 5 dmz
+no fragment reassembly full dmz
+fragment size 200 outside
+fragment chain 24 outside
+fragment timeout 5 outside
+no fragment reassembly full outside
+no sysopt traffic detailed-statistics
+no sysopt connection timewait
+sysopt connection tcpmss 1380
+sysopt connection tcpmss minimum 0
+sysopt connection permit-vpn
+sysopt connection reclassify-vpn
+no sysopt connection preserve-vpn-flows
+no sysopt radius ignore-secret
+no sysopt noproxyarp management
+no sysopt noproxyarp inside
+no sysopt noproxyarp dmz
+no sysopt noproxyarp outside
+service password-recovery
+no crypto ipsec ikev2 sa-strength-enforcement
+crypto ipsec security-association lifetime seconds 28800
+crypto ipsec security-association lifetime kilobytes 4608000
+crypto ipsec security-association replay window-size 64
+crypto ipsec security-association pmtu-aging infinite
+crypto ipsec fragmentation before-encryption management
+crypto ipsec fragmentation before-encryption inside
+crypto ipsec fragmentation before-encryption dmz
+crypto ipsec fragmentation before-encryption outside
+crypto ipsec df-bit copy-df management
+crypto ipsec df-bit copy-df inside
+crypto ipsec df-bit copy-df dmz
+crypto ipsec df-bit copy-df outside
+no crypto ipsec inner-routing-lookup
+crypto ca trustpoint _SmartCallHome_ServerCA
+ revocation-check none
+ enrollment retry period 1
+ enrollment retry count 0
+ no fqdn
+ no email
+ no subject-name
+ no serial-number
+ no ip-address
+ no password
+ no auto-enroll
+ no validation-usage
+ accept-subordinates
+ ca-check
+ id-cert-issuer
+ id-usage ssl-ipsec
+ no ignore-ipsec-keyusage
+ no ignore-ssl-keyusage
+ no proxy-ldc-issuer
+ crl configure
+  policy cdp
+  cache-time 60
+  enforcenextupdate
+  protocol http
+  protocol ldap
+  protocol scep
+crypto ca trustpool policy
+ revocation-check none
+ crl cache-time 60
+ crl enforcenextupdate
+ auto-import
+ auto-import url http://www.cisco.com/security/pki/trs/ios_core.p7b
+ auto-import time 22:00:00
+crypto ca alerts expiration begin 60 repeat 7
+crypto ca certificate chain _SmartCallHome_ServerCA
+ certificate ca 0509
+    308205b7 3082039f a0030201 02020205 09300d06 092a8648 86f70d01 01050500 
+    3045310b 30090603 55040613 02424d31 19301706 0355040a 13105175 6f566164 
+    6973204c 696d6974 6564311b 30190603 55040313 1251756f 56616469 7320526f 
+    6f742043 41203230 1e170d30 36313132 34313832 3730305a 170d3331 31313234 
+    31383233 33335a30 45310b30 09060355 04061302 424d3119 30170603 55040a13 
+    1051756f 56616469 73204c69 6d697465 64311b30 19060355 04031312 51756f56 
+    61646973 20526f6f 74204341 20323082 0222300d 06092a86 4886f70d 01010105 
+    00038202 0f003082 020a0282 0201009a 18ca4b94 0d002daf 03298af0 0f81c8ae 
+    4c19851d 089fab29 4485f32f 81ad321e 9046bfa3 86261a1e fe7e1c18 3a5c9c60 
+    172a3a74 8333307d 615411cb edabe0e6 d2a27ef5 6b6f18b7 0a0b2dfd e93eef0a 
+    c6b310e9 dcc24617 f85dfda4 daff9e49 5a9ce633 e62496f7 3fba5b2b 1c7a35c2 
+    d667feab 66508b6d 28602bef d760c3c7 93bc8d36 91f37ff8 db1113c4 9c7776c1 
+    aeb7026a 817aa945 83e205e6 b956c194 378f4871 6322ec17 6507958a 4bdf8fc6 
+    5a0ae5b0 e35f5e6b 11ab0cf9 85eb44e9 f80473f2 e9fe5c98 8cf573af 6bb47ecd 
+    d45c022b 4c39e1b2 95952d42 87d7d5b3 9043b76c 13f1dedd f6c4f889 3fd175f5 
+    92c391d5 8a88d090 ecdc6dde 89c26571 968b0d03 fd9cbf5b 16ac92db eafe797c 
+    adebaff7 16cbdbcd 252be51f fb9a9fe2 51cc3a53 0c48e60e bdc9b476 0652e611 
+    13857263 0304e004 362b2019 02e874a7 1fb6c956 66f07525 dc67c10e 616088b3 
+    3ed1a8fc a3da1db0 d1b12354 df44766d ed41d8c1 b222b653 1cdf351d dca1772a 
+    31e42df5 e5e5dbc8 e0ffe580 d70b63a0 ff33a10f ba2c1515 ea97b3d2 a2b5bef2 
+    8c961e1a 8f1d6ca4 6137b986 7333d797 969e237d 82a44c81 e2a1d1ba 675f9507 
+    a32711ee 16107bbc 454a4cb2 04d2abef d5fd0c51 ce506a08 31f991da 0c8f645c 
+    03c33a8b 203f6e8d 673d3ad6 fe7d5b88 c95efbcc 61dc8b33 77d34432 35096204 
+    921610d8 9e2747fb 3b21e3f8 eb1d5b02 03010001 a381b030 81ad300f 0603551d 
+    130101ff 04053003 0101ff30 0b060355 1d0f0404 03020106 301d0603 551d0e04 
+    1604141a 8462bc48 4c332504 d4eed0f6 03c41946 d1946b30 6e060355 1d230467 
+    30658014 1a8462bc 484c3325 04d4eed0 f603c419 46d1946b a149a447 3045310b 
+    30090603 55040613 02424d31 19301706 0355040a 13105175 6f566164 6973204c 
+    696d6974 6564311b 30190603 55040313 1251756f 56616469 7320526f 6f742043 
+    41203282 02050930 0d06092a 864886f7 0d010105 05000382 0201003e 0a164d9f 
+    065ba8ae 715d2f05 2f67e613 4583c436 f6f3c026 0c0db547 645df8b4 72c946a5 
+    03182755 89787d76 ea963480 1720dce7 83f88dfc 07b8da5f 4d2e67b2 84fdd944 
+    fc775081 e67cb4c9 0d0b7253 f8760707 4147960c fbe08226 93558cfe 221f6065 
+    7c5fe726 b3f73290 9850d437 7155f692 2178f795 79faf82d 26876656 3077a637 
+    78335210 58ae3f61 8ef26ab1 ef187e4a 5963ca8d a256d5a7 2fbc561f cf39c1e2 
+    fb0aa815 2c7d4d7a 63c66c97 443cd26f c34a170a f890d257 a21951a5 2d9741da 
+    074fa950 da908d94 46e13ef0 94fd1000 38f53be8 40e1b46e 561a20cc 6f588ded 
+    2e458fd6 e9933fe7 b12cdf3a d6228cdc 84bb226f d0f8e4c6 39e90488 3cc3baeb 
+    557a6d80 9924f56c 01fbf897 b0945beb fdd26ff1 77680d35 6423acb8 55a103d1 
+    4d4219dc f8755956 a3f9a849 79f8af0e b911a07c b76aed34 d0b62662 381a870c 
+    f8e8fd2e d3907f07 912a1dd6 7e5c8583 99b03808 3fe95ef9 3507e4c9 626e577f 
+    a75095f7 bac89be6 8ea201c5 d666bf79 61f33c1c e1b9825c 5da0c3e9 d848bd19 
+    a2111419 6eb2861b 683e4837 1a88b75d 965e9cc7 ef276208 e291195c d2f121dd 
+    ba174282 97718153 31a99ff6 7d62bf72 e1a3931d cc8a265a 0938d0ce d70d8016 
+    b478a53a 874c8d8a a5d54697 f22c10b9 bc5422c0 01506943 9ef4b2ef 6df8ecda 
+    f1e3b1ef df918f54 2a0b25c1 2619c452 100565d5 8210eac2 31cd2e
+  quit
+crypto isakmp identity auto 
+crypto isakmp nat-traversal 20
+crypto ikev2 cookie-challenge 50
+crypto ikev2 fragmentation mtu 576 preferred-method ietf
+ crypto ikev2 limit max-in-negotiation-sa 100
+no crypto ikev2 limit max-sa
+no crypto ikev2 notify invalid-selectors
+crypto ikev2 redirect during-auth
+crypto ikev1 limit max-in-negotiation-sa 20
+telnet timeout 5
+ssh stricthostkeycheck
+ssh timeout 30
+ssh version 2
+ssh key-exchange group dh-group14-sha256
+ssh 0.0.0.0 0.0.0.0 management
+console timeout 0
+vpn-addr-assign aaa
+vpn-addr-assign dhcp
+vpn-addr-assign local reuse-delay 0
+ipv6-vpn-addr-assign aaa
+ipv6-vpn-addr-assign local reuse-delay 0
+no vpn-sessiondb max-other-vpn-limit
+no vpn-sessiondb max-anyconnect-premium-or-essentials-limit
+no remote-access threshold 
+l2tp tunnel hello 60
+!
+tls-proxy maximum-session 4000
+!
+threat-detection rate dos-drop rate-interval 600 average-rate 100 burst-rate 400
+threat-detection rate dos-drop rate-interval 3600 average-rate 80 burst-rate 320
+threat-detection rate bad-packet-drop rate-interval 600 average-rate 100 burst-rate 400
+threat-detection rate bad-packet-drop rate-interval 3600 average-rate 80 burst-rate 320
+threat-detection rate acl-drop rate-interval 600 average-rate 400 burst-rate 800
+threat-detection rate acl-drop rate-interval 3600 average-rate 320 burst-rate 640
+threat-detection rate conn-limit-drop rate-interval 600 average-rate 100 burst-rate 400
+threat-detection rate conn-limit-drop rate-interval 3600 average-rate 80 burst-rate 320
+threat-detection rate icmp-drop rate-interval 600 average-rate 100 burst-rate 400
+threat-detection rate icmp-drop rate-interval 3600 average-rate 80 burst-rate 320
+threat-detection rate scanning-threat rate-interval 600 average-rate 5 burst-rate 10
+threat-detection rate scanning-threat rate-interval 3600 average-rate 4 burst-rate 8
+threat-detection rate syn-attack rate-interval 600 average-rate 100 burst-rate 200
+threat-detection rate syn-attack rate-interval 3600 average-rate 80 burst-rate 160
+threat-detection rate fw-drop rate-interval 600 average-rate 400 burst-rate 1600
+threat-detection rate fw-drop rate-interval 3600 average-rate 320 burst-rate 1280
+threat-detection rate inspect-drop rate-interval 600 average-rate 400 burst-rate 1600
+threat-detection rate inspect-drop rate-interval 3600 average-rate 320 burst-rate 1280
+threat-detection rate interface-drop rate-interval 600 average-rate 2000 burst-rate 8000
+threat-detection rate interface-drop rate-interval 3600 average-rate 1600 burst-rate 6400
+threat-detection basic-threat
+threat-detection statistics access-list
+no threat-detection statistics tcp-intercept
+tftp blocksize 1468
+ssl server-version tlsv1 dtlsv1
+ssl client-version tlsv1
+ssl cipher default medium
+ssl cipher tlsv1 medium
+ssl cipher tlsv1.1 medium
+ssl cipher tlsv1.2 medium
+ssl cipher dtlsv1 medium
+ssl cipher dtlsv1.2 medium
+ssl dh-group group14
+ssl ecdh-group group19
+ssl certificate-authentication fca-timeout 2
+webvpn
+ memory-size percent 50
+ port 443
+ dtls port 443
+ character-encoding none
+ no http-proxy
+ no https-proxy
+ default-idle-timeout 1800
+ http-headers
+  hsts-server
+   enable
+   max-age 31536000
+   include-sub-domains
+   no preload
+  hsts-client
+   enable
+  x-content-type-options
+  x-xss-protection
+  content-security-policy 
+ portal-access-rule none
+ no hostscan enable
+ no anyconnect enable
+ no tunnel-group-list enable
+ no http-only-cookie
+ no tunnel-group-preference group-url
+ rewrite order 65535 enable resource-mask *
+ no internal-password
+ no onscreen-keyboard
+ no default-language
+ no smart-tunnel notification-icon
+ no keepout
+ cache
+  disable
+  max-object-size 1000
+  min-object-size 0
+  no cache-static-content enable
+  lmfactor 20
+  expiry-time 1
+ no auto-signon
+ error-recovery disable
+ no ssl-server-check
+ no mus password
+ mus host mus.cisco.com
+ no hostscan data-limit
+: # show import webvpn customization
+: Template
+: DfltCustomization
+: # show import webvpn url-list
+: Template
+: # show import webvpn translation-table
+: Translation Tables' Templates:
+:   PortForwarder
+:   banners
+:   customization
+:   url-list
+:   webvpn
+: Translation Tables:
+:   fr                   PortForwarder
+:   fr                   customization
+:   fr                   webvpn
+:   ja                   PortForwarder
+:   ja                   customization
+:   ja                   webvpn
+:   ru                   PortForwarder
+:   ru                   customization
+:   ru                   webvpn
+: # show import webvpn mst-translation
+: No MS translation tables defined
+: # show import webvpn webcontent
+: No custom webcontent is loaded
+: # show import webvpn AnyConnect-customization
+: No OEM resources defined
+: # show import webvpn plug-in
+: # show import webvpn app
+:
+group-policy DfltGrpPolicy internal
+group-policy DfltGrpPolicy attributes
+ banner none
+ wins-server none
+ dns-server none
+ dhcp-network-scope none
+ vpn-access-hours none
+ vpn-simultaneous-logins 3
+ vpn-idle-timeout 30
+ vpn-idle-timeout alert-interval 1
+ vpn-session-timeout none
+ vpn-session-timeout alert-interval 1
+ vpn-filter none
+ ipv6-vpn-filter none
+ vpn-tunnel-protocol ikev1 ikev2 l2tp-ipsec ssl-clientless
+ password-storage disable
+ ip-comp disable
+ re-xauth disable
+ group-lock none
+ pfs disable
+ ipsec-udp disable
+ ipsec-udp-port 10000
+ split-tunnel-policy tunnelall
+ ipv6-split-tunnel-policy tunnelall
+ split-tunnel-network-list none
+ default-domain none
+ split-dns none
+ split-tunnel-all-dns disable
+ intercept-dhcp 255.255.255.255 disable
+ secure-unit-authentication disable
+ user-authentication disable
+ user-authentication-idle-timeout 30
+ ip-phone-bypass disable
+ client-bypass-protocol disable
+ gateway-fqdn none
+ leap-bypass disable
+ nem disable
+ backup-servers keep-client-config
+ msie-proxy server none
+ msie-proxy method no-modify
+ msie-proxy except-list none
+ msie-proxy local-bypass disable
+ msie-proxy pac-url none
+ msie-proxy lockdown enable
+ vlan none
+ address-pools none
+ ipv6-address-pools none
+ smartcard-removal-disconnect enable
+ scep-forwarding-url none
+ security-group-tag none
+ periodic-authentication certificate none
+ no vpn-simultaneous-login-delete-no-delay
+ client-firewall none
+ client-access-rule none
+ webvpn
+  url-list none
+  filter none
+  homepage none
+  html-content-filter none
+  port-forward name Application Access
+  port-forward disable 
+  http-proxy disable
+  anyconnect ssl dtls enable
+  anyconnect mtu 1406
+  anyconnect firewall-rule client-interface private none
+  anyconnect firewall-rule client-interface public none
+  anyconnect keep-installer installed
+  anyconnect ssl keepalive 20
+  anyconnect ssl rekey time none
+  anyconnect ssl rekey method none
+  anyconnect dpd-interval client 30
+  anyconnect dpd-interval gateway 30
+  anyconnect ssl compression none
+  anyconnect dtls compression none
+  anyconnect modules none
+  anyconnect profiles none
+  anyconnect ask none
+  customization none
+  keep-alive-ignore 4
+  http-comp gzip
+  download-max-size 2147483647
+  upload-max-size 2147483647
+  post-max-size 2147483647
+  user-storage none
+  storage-objects value cookies,credentials
+  storage-key none
+  hidden-shares none
+  smart-tunnel disable
+  activex-relay enable
+  unix-auth-uid 65534
+  unix-auth-gid 65534
+  file-entry enable
+  file-browsing enable
+  url-entry enable
+  deny-message value Login was successful, but because certain criteria have not been met or due to some specific group policy, you do not have permission to use any of the VPN features. Contact your IT administrator for more information
+  smart-tunnel auto-signon disable
+  anyconnect ssl df-bit-ignore disable
+  anyconnect routing-filtering-ignore disable
+  smart-tunnel tunnel-policy tunnelall
+  always-on-vpn profile-setting
+dynamic-access-policy-record DfltAccessPolicy
+ action continue
+password-policy minimum-length 3
+password-policy minimum-changes 0
+password-policy minimum-lowercase 0
+password-policy minimum-uppercase 0
+password-policy minimum-numeric 0
+password-policy minimum-special 0
+password-policy lifetime 0
+no password-policy authenticate-enable
+no password-policy username-check
+no password-policy reuse-interval
+quota management-session 15
+quota management-session http 5
+quota management-session ssh 5
+quota management-session telnet 5
+username admin password ***** pbkdf2 privilege 15
+username admin password-date Aug 21 2020
+username admin attributes
+ service-type admin
+ ssh authentication publickey 18:ea:a8:f9:2b:96:cb:15:97:4b:97:d1:94:49:ce:03:7f:07:ce:0e:f4:dc:57:ea:19:0c:79:25:f4:f1:69:e3 hashed
+tunnel-group DefaultL2LGroup type ipsec-l2l
+tunnel-group DefaultL2LGroup general-attributes
+ default-group-policy DfltGrpPolicy
+tunnel-group DefaultL2LGroup ipsec-attributes
+ no ikev1 pre-shared-key
+ peer-id-validate req
+ no chain
+ no ikev1 trust-point
+ isakmp keepalive threshold 10 retry 2
+ no ikev2 remote-authentication
+ no ikev2 local-authentication
+tunnel-group DefaultRAGroup type remote-access
+tunnel-group DefaultRAGroup general-attributes
+ no address-pool
+ no ipv6-address-pool
+ authentication-server-group LOCAL
+ secondary-authentication-server-group none
+ no accounting-server-group
+ default-group-policy DfltGrpPolicy
+ no dhcp-server
+ no strip-realm
+ no nat-assigned-to-public-ip
+ no scep-enrollment enable
+ no password-management
+ no strip-group
+ no authorization-required
+ username-from-certificate CN OU
+ secondary-username-from-certificate CN OU
+ authentication-attr-from-server primary
+ authenticated-session-username primary
+ username-from-certificate-choice second-certificate
+ secondary-username-from-certificate-choice second-certificate
+tunnel-group DefaultRAGroup webvpn-attributes
+ customization DfltCustomization
+ authentication aaa
+ no override-svc-download
+ no radius-reject-message
+ no proxy-auth sdi
+ no pre-fill-username client
+ no pre-fill-username clientless
+ no secondary-pre-fill-username client
+ no secondary-pre-fill-username clientless
+ dns-group DefaultDNS
+ no without-csd
+tunnel-group DefaultRAGroup ipsec-attributes
+ no ikev1 pre-shared-key
+ peer-id-validate req
+ no chain
+ no ikev1 trust-point
+ no ikev1 radius-sdi-xauth
+ isakmp keepalive threshold 300 retry 2
+ ikev1 user-authentication xauth
+ no ikev2 remote-authentication
+ no ikev2 local-authentication
+tunnel-group DefaultRAGroup ppp-attributes
+ no authentication pap
+ authentication chap
+ authentication ms-chap-v1
+ no authentication ms-chap-v2
+ no authentication eap-proxy
+tunnel-group DefaultWEBVPNGroup type remote-access
+tunnel-group DefaultWEBVPNGroup general-attributes
+ no address-pool
+ no ipv6-address-pool
+ authentication-server-group LOCAL
+ secondary-authentication-server-group none
+ no accounting-server-group
+ default-group-policy DfltGrpPolicy
+ no dhcp-server
+ no strip-realm
+ no nat-assigned-to-public-ip
+ no scep-enrollment enable
+ no password-management
+ no strip-group
+ no authorization-required
+ username-from-certificate CN OU
+ secondary-username-from-certificate CN OU
+ authentication-attr-from-server primary
+ authenticated-session-username primary
+ username-from-certificate-choice second-certificate
+ secondary-username-from-certificate-choice second-certificate
+tunnel-group DefaultWEBVPNGroup webvpn-attributes
+ customization DfltCustomization
+ authentication aaa
+ no override-svc-download
+ no radius-reject-message
+ no proxy-auth sdi
+ no pre-fill-username client
+ no pre-fill-username clientless
+ no secondary-pre-fill-username client
+ no secondary-pre-fill-username clientless
+ dns-group DefaultDNS
+ no without-csd
+tunnel-group DefaultWEBVPNGroup ipsec-attributes
+ no ikev1 pre-shared-key
+ peer-id-validate req
+ no chain
+ no ikev1 trust-point
+ no ikev1 radius-sdi-xauth
+ isakmp keepalive threshold 300 retry 2
+ ikev1 user-authentication xauth
+ no ikev2 remote-authentication
+ no ikev2 local-authentication
+tunnel-group DefaultWEBVPNGroup ppp-attributes
+ no authentication pap
+ authentication chap
+ authentication ms-chap-v1
+ no authentication ms-chap-v2
+ no authentication eap-proxy
+!
+class-map type inspect http match-all _default_gator
+ match request header user-agent regex _default_gator
+class-map type inspect http match-all _default_msn-messenger
+ match response header content-type regex _default_msn-messenger
+class-map type inspect http match-all _default_yahoo-messenger
+ match request body regex _default_yahoo-messenger
+class-map type inspect http match-all _default_windows-media-player-tunnel
+ match request header user-agent regex _default_windows-media-player-tunnel
+class-map type inspect http match-all _default_gnu-http-tunnel
+ match request args regex _default_gnu-http-tunnel_arg
+ match request uri regex _default_gnu-http-tunnel_uri
+class-map type inspect http match-all _default_firethru-tunnel
+ match request header host regex _default_firethru-tunnel_1
+ match request uri regex _default_firethru-tunnel_2
+class-map type inspect http match-all _default_aim-messenger
+ match request header host regex _default_aim-messenger
+class-map type inspect http match-all _default_http-tunnel
+ match request uri regex _default_http-tunnel
+class-map type inspect http match-all _default_kazaa
+ match response header regex _default_x-kazaa-network count gt 0
+class-map type inspect http match-all _default_shoutcast-tunneling-protocol
+ match request header regex _default_icy-metadata regex _default_shoutcast-tunneling-protocol
+class-map class-default
+ match any
+class-map inspection_default
+ match default-inspection-traffic
+class-map type inspect http match-all _default_GoToMyPC-tunnel
+ match request args regex _default_GoToMyPC-tunnel
+ match request uri regex _default_GoToMyPC-tunnel_2
+class-map type inspect http match-all _default_httport-tunnel
+ match request header host regex _default_httport-tunnel
+!
+!
+policy-map type inspect dns preset_dns_map
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no message-length maximum server
+  dns-guard
+  protocol-enforcement
+  nat-rewrite
+  no umbrella
+  no dnscrypt
+  no tcp-inspection
+  no id-randomization
+  no id-mismatch
+  no tsig enforced
+policy-map type inspect m3ua _default_m3ua_map
+ description Default M3UA policymap
+ parameters
+  no message-tag-validation error
+  no message-tag-validation notify
+  no message-tag-validation dupu
+  ss7 variant ITU
+  timeout endpoint 0:30:00
+  timeout session 0:01:00
+policy-map type inspect ipv6 _default_ipv6_map
+ description Default IPV6 policy-map
+ parameters
+  verify-header type
+  verify-header order
+ match header routing-type range 2 255
+  drop log
+policy-map type inspect h323 _default_h323_map
+ description Default H.323 policymap
+ parameters
+  no rtp-conformance
+policy-map type inspect sip _default_sip_map
+ description Default SIP policymap
+ parameters
+  im
+  no ip-address-privacy
+  traffic-non-sip
+  no rtp-conformance
+policy-map type inspect dns _default_dns_map
+ description Default DNS policy-map
+ parameters
+  no message-length maximum client
+  no message-length maximum
+  no message-length maximum server
+  dns-guard
+  protocol-enforcement
+  nat-rewrite
+  no umbrella
+  no dnscrypt
+  no tcp-inspection
+  no id-randomization
+  no id-mismatch
+  no tsig enforced
+policy-map type inspect esmtp _default_esmtp_map
+ description Default ESMTP policy-map
+ parameters
+  mask-banner
+  no mail-relay
+  no special-character
+  allow-tls
+ match cmd line length gt 512 
+  drop-connection log
+ match cmd RCPT count gt 100 
+  drop-connection log
+ match body line length gt 998 
+  log
+ match header line length gt 998 
+  drop-connection log
+ match sender-address length gt 320 
+  drop-connection log
+ match MIME filename length gt 255 
+  drop-connection log
+ match ehlo-reply-parameter others 
+  mask
+policy-map type inspect rtsp _default_rtsp_map
+ description Default RTSP policymap
+ parameters
+policy-map type inspect diameter _default_diameter_map
+ description Default DIAMETER policymap
+ parameters
+  no unsupported application-id action log
+  no unsupported command-code action log
+  no unsupported avp action log
+policy-map type inspect ip-options _default_ip_options_map
+ description Default IP-OPTIONS policy-map
+ parameters
+  router-alert action allow
+policy-map global_policy
+ class inspection_default
+  inspect ip-options _default_ip_options_map 
+  inspect netbios 
+  inspect rtsp 
+  inspect sunrpc 
+  inspect tftp 
+  inspect xdmcp 
+  inspect dns preset_dns_map 
+  inspect ftp 
+  inspect h323 h225 _default_h323_map 
+  inspect h323 ras _default_h323_map 
+  inspect rsh 
+  inspect esmtp _default_esmtp_map 
+  inspect sqlnet 
+  inspect sip  
+  inspect skinny  
+  inspect snmp 
+  inspect icmp 
+  inspect icmp error 
+  inspect http 
+ class class-default
+policy-map type inspect sctp _default_sctp_map
+ description Default SCTP policymap
+ parameters
+policy-map type inspect dns migrated_dns_map_2
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no message-length maximum server
+  dns-guard
+  protocol-enforcement
+  nat-rewrite
+  no umbrella
+  no dnscrypt
+  no tcp-inspection
+  no id-randomization
+  no id-mismatch
+  no tsig enforced
+policy-map type inspect dns migrated_dns_map_1
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no message-length maximum server
+  dns-guard
+  protocol-enforcement
+  nat-rewrite
+  no umbrella
+  no dnscrypt
+  no tcp-inspection
+  no id-randomization
+  no id-mismatch
+  no tsig enforced
+policy-map type inspect ipsec-pass-thru _default_ipsec_passthru_map
+ description Default IPSEC-PASS-THRU policy-map
+ parameters
+  esp per-client-max 0 timeout 0:10:00 
+!
+service-policy global_policy global
+prompt hostname context 
+compression anyconnect-ssl http-comp
+no coredump enable
+no call-home reporting anonymous
+call-home
+ alert-group all
+ alert-group-config environment
+  threshold cpu 85-90
+  threshold memory 85-90
+ event-queue-size 10
+ rate-limit 10
+ profile CiscoTAC-1
+  no active
+  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+  destination address email callhome@cisco.com
+  destination message-size-limit 3145728
+  destination preferred-msg-format xml
+  destination transport-method http
+  subscribe-to-alert-group diagnostic severity informational
+  subscribe-to-alert-group environment severity informational
+  subscribe-to-alert-group inventory severity informational periodic monthly 17
+  subscribe-to-alert-group configuration export minimum periodic monthly 17
+  subscribe-to-alert-group telemetry severity informational periodic daily
+ profile License
+  active
+  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+  destination message-size-limit 3145728
+  destination preferred-msg-format xml
+  destination transport-method http
+no password encryption aes
+Cryptochecksum:392e8f5255b518e9bbdac05ebd4ef8ed
+: end
